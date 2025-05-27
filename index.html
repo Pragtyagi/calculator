@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Calculator Suite - Your All-in-One Calculation Tool</title>
+    <meta name="description" content="A comprehensive suite of online calculators for finance, health, date & time, math, and utility purposes. Includes EMI, loan, age, BMI, percentage, currency converters, and more.">
+    <meta name="keywords" content="calculator, online calculator, universal calculator, emi calculator, loan calculator, age calculator, bmi calculator, percentage calculator, currency converter, tip calculator, interest calculator, financial calculator, health calculator, math calculator, utility calculator, bill splitter, mortgage calculator, retirement calculator, investment calculator">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .calculator-card {
+            transition: all 0.3s ease-in-out;
+            min-height: 300px; 
+        }
+        .calculator-card:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 20px -3px rgb(0 0 0 / 0.1), 0 4px 8px -4px rgb(0 0 0 / 0.1); 
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f9fafb; border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; } 
+        input[type="date"]:required:invalid::-webkit-datetime-edit { color: transparent; }
+        input[type="date"]:focus::-webkit-datetime-edit { color: black !important; }
+        .hidden-card { display: none !important; }
+        .ad-placeholder {
+            background-color: #e9e9e9;
+            border: 1px dashed #cccccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777777;
+            font-size: 0.875rem;
+            width: 100%;
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-sky-100 hover:text-sky-700 transition-colors;
+        }
+    </style>
+    
+</head>
+<body class="bg-gray-50 text-slate-800">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center text-2xl font-bold text-sky-700">
+                        <span class="mr-2">⚙️</span> 
+                        CalcSuite
+                    </a>
+                </div>
+                <nav class="hidden md:flex space-x-4">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#" class="nav-link">About Us</a>
+                    <a href="#" class="nav-link">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    </div>
+            </div>
+            <nav class="md:hidden py-2 text-center space-y-1">
+                <a href="#" class="block nav-link">Home</a>
+                <a href="#" class="block nav-link">About Us</a>
+                <a href="#" class="block nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container mx-auto p-4 pt-6 pb-8 md:p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-800">Universal Calculator</h1>
+            <p class="text-slate-600 mt-2 text-lg">Your one-stop solution for diverse calculations.</p>
+        </div>
+
+        <div class="mt-6 mb-10 w-full md:max-w-xl mx-auto px-2 sm:px-0">
+            <label for="searchCalculator" class="sr-only">Search Calculators</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input type="search" name="searchCalculator" id="searchCalculator"
+                           class="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg leading-5 bg-white placeholder-slate-400 focus:outline-none focus:placeholder-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 sm:text-sm shadow-sm"
+                           placeholder="Search calculators (e.g., Age, Loan, BMI)...">
+            </div>
+        </div>
+
+        <div class="my-8 ad-placeholder h-24 md:h-32">
+            Advertisement Slot (e.g., 728x90 or Responsive)
+        </div>
+
+
+        <div id="calculator-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        </div>
+         <div id="noResultsMessage" class="text-center text-slate-500 text-xl mt-10 hidden-card">
+            No calculators found matching your search.
+        </div>
+    </div>
+
+    <footer class="text-center p-6 mt-12 text-slate-500 text-sm border-t border-slate-200">
+        <div class="mb-4 ad-placeholder h-16 md:h-24">
+            Advertisement Slot (e.g., Footer Ad)
+        </div>
+        <p>&copy; <span id="currentYear"></span> Universal Calculator Suite. All calculations are for estimation purposes and not professional advice.</p>
+    </footer>
+
+    <script>
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        const currencyData = [
+            { code: 'USD', name: 'US Dollar', symbol: '$' }, { code: 'EUR', name: 'Euro', symbol: '€' }, 
+            { code: 'GBP', name: 'British Pound', symbol: '£' }, { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
+            { code: 'JPY', name: 'Japanese Yen', symbol: '¥' },
+            { code: 'AED', name: 'UAE Dirham' }, { code: 'AFN', name: 'Afghan Afghani' }, { code: 'ALL', name: 'Albanian Lek' },
+            { code: 'AMD', name: 'Armenian Dram' }, { code: 'ARS', name: 'Argentine Peso' }, { code: 'AUD', name: 'Australian Dollar' },
+            { code: 'AZN', name: 'Azerbaijani Manat' }, { code: 'BAM', name: 'Bosnia-Herzegovina C.M.' }, { code: 'BDT', name: 'Bangladeshi Taka' },
+            { code: 'BGN', name: 'Bulgarian Lev' }, { code: 'BHD', name: 'Bahraini Dinar' }, { code: 'BRL', name: 'Brazilian Real' },
+            { code: 'BYN', name: 'Belarusian Ruble' }, { code: 'CAD', name: 'Canadian Dollar' }, { code: 'CHF', name: 'Swiss Franc' },
+            { code: 'CLP', name: 'Chilean Peso' }, { code: 'CNY', name: 'Chinese Yuan' }, { code: 'COP', name: 'Colombian Peso' },
+            { code: 'CZK', name: 'Czech Koruna' }, { code: 'DKK', name: 'Danish Krone' }, { code: 'DZD', name: 'Algerian Dinar' },
+            { code: 'EGP', name: 'Egyptian Pound' }, { code: 'ETB', name: 'Ethiopian Birr' }, { code: 'GEL', name: 'Georgian Lari' },
+            { code: 'GHS', name: 'Ghanaian Cedi' }, { code: 'HKD', name: 'Hong Kong Dollar' }, { code: 'HUF', name: 'Hungarian Forint' },
+            { code: 'IDR', name: 'Indonesian Rupiah' }, { code: 'ILS', name: 'Israeli New Shekel' }, { code: 'IQD', name: 'Iraqi Dinar' },
+            { code: 'IRR', name: 'Iranian Rial' }, { code: 'ISK', name: 'Icelandic Króna' }, { code: 'JMD', name: 'Jamaican Dollar' },
+            { code: 'JOD', name: 'Jordanian Dinar' },  { code: 'KES', name: 'Kenyan Shilling' },
+            { code: 'KRW', name: 'South Korean Won' }, { code: 'KWD', name: 'Kuwaiti Dinar' }, { code: 'KZT', name: 'Kazakhstani Tenge' },
+            { code: 'LBP', name: 'Lebanese Pound' }, { code: 'LKR', name: 'Sri Lankan Rupee' }, { code: 'LYD', name: 'Libyan Dinar' },
+            { code: 'MAD', name: 'Moroccan Dirham' }, { code: 'MXN', name: 'Mexican Peso' }, { code: 'MYR', name: 'Malaysian Ringgit' },
+            { code: 'NGN', name: 'Nigerian Naira' }, { code: 'NOK', name: 'Norwegian Krone' }, { code: 'NPR', name: 'Nepalese Rupee' },
+            { code: 'NZD', name: 'New Zealand Dollar' }, { code: 'OMR', name: 'Omani Rial' }, { code: 'PAB', name: 'Panamanian Balboa' },
+            { code: 'PEN', name: 'Peruvian Sol' }, { code: 'PHP', name: 'Philippine Peso' }, { code: 'PKR', name: 'Pakistani Rupee' },
+            { code: 'PLN', name: 'Polish Zloty' }, { code: 'QAR', name: 'Qatari Rial' }, { code: 'RON', name: 'Romanian Leu' },
+            { code: 'RSD', name: 'Serbian Dinar' }, { code: 'RUB', name: 'Russian Ruble' }, { code: 'SAR', name: 'Saudi Riyal' },
+            { code: 'SEK', name: 'Swedish Krona' }, { code: 'SGD', name: 'Singapore Dollar' }, { code: 'THB', name: 'Thai Baht' },
+            { code: 'TND', name: 'Tunisian Dinar' }, { code: 'TRY', name: 'Turkish Lira' }, { code: 'TWD', name: 'New Taiwan Dollar' },
+            { code: 'UAH', name: 'Ukrainian Hryvnia' }, { code: 'UGX', name: 'Ugandan Shilling' }, { code: 'UYU', name: 'Uruguayan Peso' },
+            { code: 'VND', name: 'Vietnamese Dong' }, { code: 'ZAR', name: 'South African Rand' }
+        ];
+        const currencyOptionsForSelect = currencyData.map(c => ({ value: c.code, text: `${c.symbol ? c.symbol + ' ' : ''}${c.code} (${c.name})` }));
+        const currencySymbolMap = Object.fromEntries(currencyData.filter(c => c.symbol).map(c => [c.code, c.symbol]));
+
+        const timeZoneData = [ 
+            { name: "UTC-12:00 (BIT)", offset: -12, text: "UTC-12 (Baker Island Time)"}, { name: "UTC-11:00 (NUT)", offset: -11, text: "UTC-11 (Niue Time)"}, { name: "UTC-10:00 (HST)", offset: -10, text: "UTC-10 (Hawaii Standard Time)"}, { name: "UTC-09:00 (AKT)", offset: -9, text: "UTC-9 (Alaska Standard Time)"}, { name: "UTC-08:00 (PST)", offset: -8, text: "UTC-8 (Pacific Standard Time)"}, { name: "UTC-07:00 (MST)", offset: -7, text: "UTC-7 (Mountain Standard Time)"}, { name: "UTC-06:00 (CST)", offset: -6, text: "UTC-6 (Central Standard Time)"}, { name: "UTC-05:00 (EST)", offset: -5, text: "UTC-5 (Eastern Standard Time)"}, { name: "UTC-04:00 (AST)", offset: -4, text: "UTC-4 (Atlantic Standard Time)"}, { name: "UTC-03:00 (ART)", offset: -3, text: "UTC-3 (Argentina Time)"}, { name: "UTC-02:00 (GST)", offset: -2, text: "UTC-2 (South Georgia Time)"}, { name: "UTC-01:00 (CVT)", offset: -1, text: "UTC-1 (Cape Verde Time)"}, { name: "UTC+00:00 (GMT)", offset: 0, text: "UTC+0 (Greenwich Mean Time)"}, { name: "UTC+01:00 (CET)", offset: 1, text: "UTC+1 (Central European Time)"}, { name: "UTC+02:00 (EET)", offset: 2, text: "UTC+2 (Eastern European Time)"}, { name: "UTC+03:00 (MSK)", offset: 3, text: "UTC+3 (Moscow Standard Time)"}, { name: "UTC+04:00 (GST)", offset: 4, text: "UTC+4 (Gulf Standard Time)"}, { name: "UTC+05:00 (PKT)", offset: 5, text: "UTC+5 (Pakistan Standard Time)"}, { name: "UTC+05:30 (IST)", offset: 5.5, text: "UTC+5:30 (Indian Standard Time)"}, { name: "UTC+06:00 (BST)", offset: 6, text: "UTC+6 (Bangladesh Standard Time)"}, { name: "UTC+07:00 (WIB)", offset: 7, text: "UTC+7 (Western Indonesian Time)"}, { name: "UTC+08:00 (CST)", offset: 8, text: "UTC+8 (China Standard Time)"}, { name: "UTC+09:00 (JST)", offset: 9, text: "UTC+9 (Japan Standard Time)"}, { name: "UTC+10:00 (AEST)", offset: 10, text: "UTC+10 (Australian Eastern ST)"}, { name: "UTC+11:00 (SBT)", offset: 11, text: "UTC+11 (Solomon Islands Time)"}, { name: "UTC+12:00 (NZST)", offset: 12, text: "UTC+12 (New Zealand Standard Time)"},
+        ];
+        const timeZoneOptionsForSelect = timeZoneData.map(tz => ({value: tz.offset, text: tz.text}));
+
+        const calculatorDefinitions = [
+            {
+                id: 'billSplitter',
+                title: 'Bill Splitter / Tip Calculator',
+                category: 'Financial',
+                keywords: ['tip', 'share', 'restaurant', 'split', 'gratuity'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M10.75 2.75a.75.75 0 00-1.5 0v8.5a.75.75 0 001.5 0v-8.5zM13.25 2.75a.75.75 0 00-1.5 0v5.5a.75.75 0 001.5 0v-5.5zM1.5 15.75a3 3 0 003 3h15a3 3 0 003-3V8.25a3 3 0 00-3-3H16.5v-.75a.75.75 0 00-1.5 0V5.25H9v-.75a.75.75 0 00-1.5 0V5.25H4.5a3 3 0 00-3 3v7.5zM4.5 7.5A1.5 1.5 0 016 6h12a1.5 1.5 0 011.5 1.5v8.25a1.5 1.5 0 01-1.5 1.5H6a1.5 1.5 0 01-1.5-1.5V7.5z" /></svg>`,
+                inputs: [
+                    { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'},
+                    { id: 'billAmount', label: 'Bill Amount', type: 'number', placeholder: 'e.g., 100' },
+                    { id: 'tipAmount', label: 'Tip Amount', type: 'number', placeholder: 'e.g., 10', defaultValue: '0' },
+                    { id: 'numPeople', label: 'Number of People', type: 'number', placeholder: 'e.g., 4', defaultValue: '1', min: '1' }
+                ],
+                outputs: [ { id: 'tipAmountOutput', label: 'Tip Amount:', default: '0.00', isCurrency: true }, { id: 'totalBill', label: 'Total Bill:', default: '0.00', isCurrency: true }, { id: 'perPerson', label: 'Per Person:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { 
+                    const bill = parseFloat(inputs.billAmount) || 0; 
+                    const tipValue = parseFloat(inputs.tipAmount) || 0; 
+                    const people = parseInt(inputs.numPeople) || 1;
+                    if (bill < 0 || tipValue < 0 || people < 1) return { tipAmountOutput: 'N/A', totalBill: 'N/A', perPerson: 'N/A' };
+                    const total = bill + tipValue; 
+                    const perPersonAmount = people > 0 ? total / people : total;
+                    return { tipAmountOutput: tipValue.toFixed(2), totalBill: total.toFixed(2), perPerson: perPersonAmount.toFixed(2) };
+                }
+            },
+            {
+                id: 'loanEMI', 
+                title: 'Loan EMI Calculator',
+                category: 'Financial',
+                keywords: ['loan', 'emi', 'home loan', 'car loan', 'personal loan', 'business loan', 'student loan', 'repayment', 'payment', 'installment', 'finance'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-2.12 2.12a.75.75 0 001.06 1.06L9 19.06l2.87 2.87a.75.75 0 001.06-1.06L10.79 18H12a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zM6 16.5V3.75h6V16.5a1.5 1.5 0 01-1.5 1.5h-3A1.5 1.5 0 016 16.5z" clip-rule="evenodd" /><path d="M15.75 6.75a.75.75 0 000 1.5h.75v8.25a.75.75 0 001.5 0V8.25h.75a.75.75 0 000-1.5h-3z" /></svg>`,
+                inputs: [
+                    { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'},
+                    { 
+                        id: 'loanPurpose', 
+                        label: 'Loan Purpose', 
+                        type: 'select', 
+                        options: [
+                            {value: 'general', text: 'General Purpose'}, {value: 'home', text: 'Home Loan (P&I only)'},
+                            {value: 'car', text: 'Car Loan'}, {value: 'education', text: 'Education Loan'},
+                            {value: 'personal', text: 'Personal Loan'}, {value: 'business', text: 'Business Loan'}
+                        ], 
+                        defaultValue: 'general'
+                    },
+                    { id: 'principal', label: 'Principal Amount', type: 'number', placeholder: 'e.g., 100000' },
+                    { id: 'annualRate', label: 'Annual Interest Rate', type: 'number', placeholder: 'e.g., 7', defaultValue: '7', unit: '%' },
+                    { id: 'loanTermYears', label: 'Loan Term (Years)', type: 'number', placeholder: 'e.g., 5', defaultValue: '5', min: '1' }
+                ],
+                outputs: [ { id: 'monthlyEMI', label: 'Monthly EMI:', default: '0.00', isCurrency: true }, { id: 'totalInterest', label: 'Total Interest:', default: '0.00', isCurrency: true }, { id: 'totalPayment', label: 'Total Payment:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { 
+                    const P = parseFloat(inputs.principal) || 0; const annualRate = parseFloat(inputs.annualRate) || 0; const termYears = parseInt(inputs.loanTermYears) || 1;
+                    if (P <= 0 || annualRate < 0 || termYears <= 0) return { monthlyEMI: '0.00', totalInterest: '0.00', totalPayment: (P > 0 && annualRate === 0 && termYears > 0) ? P.toFixed(2) : '0.00' };
+                    const r = (annualRate / 100) / 12; const n = termYears * 12; 
+                    if (annualRate === 0) { const emi = P / n; return { monthlyEMI: emi.toFixed(2), totalInterest: '0.00', totalPayment: P.toFixed(2) }; }
+                    const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1); const totalPaymentAmount = emi * n; const totalInterestAmount = totalPaymentAmount - P;
+                    return { monthlyEMI: emi.toFixed(2), totalInterest: totalInterestAmount.toFixed(2), totalPayment: totalPaymentAmount.toFixed(2) };
+                }
+            },
+            {
+                id: 'ageCalculator',
+                title: 'Age Calculator',
+                category: 'Date & Time',
+                keywords: ['birthday', 'date of birth', 'dob', 'years old'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zM6 7.5h12v11.25a1.5 1.5 0 01-1.5 1.5H7.5a1.5 1.5 0 01-1.5-1.5V7.5z" clip-rule="evenodd" /><path d="M12 11.25a.75.75 0 01.75.75v3a.75.75 0 01-1.5 0v-3a.75.75 0 01.75-.75zM10.875 12a.75.75 0 00-1.5 0v2.625a.75.75 0 001.5 0V12zM14.625 12a.75.75 0 00-1.5 0v2.625a.75.75 0 001.5 0V12z" /></svg>`,
+                inputs: [ { id: 'dob', label: 'Date of Birth', type: 'date', placeholder: '' }, { id: 'asOfDate', label: 'Calculate Age As Of:', type: 'date', defaultValue: getTodayDateString } ],
+                outputs: [ { id: 'ageYears', label: 'Years:', default: '0' }, { id: 'ageMonths', label: 'Months:', default: '0' }, { id: 'ageDays', label: 'Days:', default: '0' }, { id: 'nextBirthday', label: 'Next Birthday:', default: 'N/A' } ],
+                calculate: function(inputs) { 
+                    const dobString = inputs.dob; const asOfDateString = inputs.asOfDate; let referenceDate;
+                    if (asOfDateString) { referenceDate = new Date(asOfDateString); if (isNaN(referenceDate.getTime())) { referenceDate = new Date(); } } else { referenceDate = new Date(); }
+                    referenceDate.setHours(0,0,0,0);
+                    if (!dobString) return { ageYears: '0', ageMonths: '0', ageDays: '0', nextBirthday: 'Enter Date of Birth' };
+                    const dob = new Date(dobString); dob.setHours(0,0,0,0);
+                    if (dob > referenceDate) return { ageYears: 'N/A', ageMonths: 'N/A', ageDays: 'N/A', nextBirthday: 'DOB is after "As Of" date' };
+                    let years = referenceDate.getFullYear() - dob.getFullYear(); let months = referenceDate.getMonth() - dob.getMonth(); let days = referenceDate.getDate() - dob.getDate();
+                    if (days < 0) { months--; days += new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 0).getDate(); }
+                    if (months < 0) { years--; months += 12; }
+                    let nextBdayString = 'N/A';
+                    if (dob.getTime() <= referenceDate.getTime()) {
+                        const refYear = referenceDate.getFullYear(); const refMonth = referenceDate.getMonth(); const refDay = referenceDate.getDate();
+                        const dobMonth = dob.getMonth(); const dobDay = dob.getDate();
+                        if (refMonth === dobMonth && refDay === dobDay) { nextBdayString = "Is the birthday (on 'As Of' date)!"; } 
+                        else { let nextBirthdayDateThisYear = new Date(refYear, dobMonth, dobDay);
+                            if (nextBirthdayDateThisYear < referenceDate) { nextBirthdayDateThisYear.setFullYear(refYear + 1); }
+                            const timeDiff = nextBirthdayDateThisYear.getTime() - referenceDate.getTime(); const daysToNextBday = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+                            if (daysToNextBday > 0) { let s = `${daysToNextBday} day(s)`; if (daysToNextBday > 30) { const m = Math.floor(daysToNextBday / 30.4375); const d = Math.round(daysToNextBday % 30.4375); s = `${m} month(s)${d > 0 ? `, ${d} day(s)` : ''}`; } nextBdayString = `${s} until next birthday`; } 
+                            else { nextBdayString = "Next birthday passed (from 'As Of' date)"; }
+                        }
+                    } return { ageYears: years.toString(), ageMonths: months.toString(), ageDays: days.toString(), nextBirthday: nextBdayString };
+                }
+            },
+            {
+                id: 'simpleInterestCalc',
+                title: 'Simple Interest Calculator',
+                category: 'Financial',
+                keywords: ['finance', 'investment', 'return', 'interest'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'principalSI', label: 'Principal Amount', type: 'number', placeholder: 'e.g., 1000' }, { id: 'rateSI', label: 'Annual Rate of Interest', type: 'number', placeholder: 'e.g., 5', unit: '%' }, { id: 'timeSI', label: 'Time Period (Years)', type: 'number', placeholder: 'e.g., 2' } ],
+                outputs: [ { id: 'interestVal', label: 'Simple Interest:', default: '0.00', isCurrency: true }, { id: 'totalAmountSI', label: 'Total Amount:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const P = parseFloat(inputs.principalSI) || 0; const R = parseFloat(inputs.rateSI) || 0; const T = parseFloat(inputs.timeSI) || 0; if (P < 0 || R < 0 || T < 0) return { interestVal: 'N/A', totalAmountSI: 'N/A' }; const SI = (P * R * T) / 100; const totalAmount = P + SI; return { interestVal: SI.toFixed(2), totalAmountSI: totalAmount.toFixed(2) }; }
+            },
+            {
+                id: 'tempConverter',
+                title: 'Temperature Converter',
+                category: 'Utility',
+                keywords: ['celsius', 'fahrenheit', 'kelvin', 'convert', 'weather'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M10.5 1.5A.75.75 0 009.75 3v1.643a4.504 4.504 0 00-1.303.949 4.018 4.018 0 00-.84 1.337.75.75 0 101.341.671A2.518 2.518 0 019.75 6.82V15a2.25 2.25 0 004.5 0V6.82a2.518 2.518 0 01.792-.82.75.75 0 101.017-1.12A4.017 4.017 0 0014.25 3.7V3a.75.75 0 00-1.5 0v.71a2.995 2.995 0 01-1.05.185h-.45A2.995 2.995 0 0110.5 3.71V3a.75.75 0 00-.75-.75z" /><path fill-rule="evenodd" d="M6.05 9.56a.75.75 0 01.64.024l.207.123A3.75 3.75 0 009.75 15V16.5a.75.75 0 01-1.5 0V15a2.25 2.25 0 01-1.116-4.15.75.75 0 01-.318-1.29ZM17.95 9.56a.75.75 0 00-.64.024l-.207.123A3.75 3.75 0 0114.25 15V16.5a.75.75 0 001.5 0V15a2.25 2.25 0 001.116-4.15.75.75 0 00.318-1.29Z" clip-rule="evenodd" /></svg>`,
+                inputs: [ 
+                    { id: 'celsius', label: 'Celsius', type: 'number', placeholder: 'e.g., 0', unit: '°C' }, 
+                    { id: 'fahrenheit', label: 'Fahrenheit', type: 'number', placeholder: 'e.g., 32', unit: '°F' },
+                    { id: 'kelvin', label: 'Kelvin', type: 'number', placeholder: 'e.g., 273.15', unit: 'K' }
+                ],
+                outputs: [], customLogic: true,
+                calculate: function(inputs, triggerInputId) {
+                    const cIn = inputs.celsius; const fIn = inputs.fahrenheit; const kIn = inputs.kelvin;
+                    let c, f, k;
+                    let results = {};
+
+                    if (typeof triggerInputId === 'string') {
+                        if (triggerInputId.includes('celsius')) {
+                            if (cIn === '') return { fahrenheit: '', kelvin: '' };
+                            c = parseFloat(cIn);
+                            if (!isNaN(c)) {
+                                f = (c * 9/5) + 32;
+                                k = c + 273.15;
+                                results = { fahrenheit: f.toFixed(2), kelvin: k.toFixed(2) };
+                            } else { return { fahrenheit: '', kelvin: '' };}
+                        } else if (triggerInputId.includes('fahrenheit')) {
+                            if (fIn === '') return { celsius: '', kelvin: '' };
+                            f = parseFloat(fIn);
+                            if (!isNaN(f)) {
+                                c = (f - 32) * 5/9;
+                                k = c + 273.15;
+                                results = { celsius: c.toFixed(2), kelvin: k.toFixed(2) };
+                            } else { return { celsius: '', kelvin: '' };}
+                        } else if (triggerInputId.includes('kelvin')) {
+                            if (kIn === '') return { celsius: '', fahrenheit: '' };
+                            k = parseFloat(kIn);
+                            if (!isNaN(k) && k >= 0) { 
+                                c = k - 273.15;
+                                f = (c * 9/5) + 32;
+                                results = { celsius: c.toFixed(2), fahrenheit: f.toFixed(2) };
+                            } else { return { celsius: '', fahrenheit: '' };}
+                        }
+                    }
+                    return results;
+                }
+            },
+            {
+                id: 'compoundInterest',
+                title: 'Compound Interest Calculator',
+                category: 'Financial',
+                keywords: ['finance', 'investment', 'savings', 'future value', 'interest'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-2.12 2.12a.75.75 0 001.06 1.06L9 19.06l2.87 2.87a.75.75 0 001.06-1.06L10.79 18H12a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zM6 16.5V3.75h6V16.5a1.5 1.5 0 01-1.5 1.5h-3A1.5 1.5 0 016 16.5zM15.75 6.75a.75.75 0 000 1.5h.75v8.25a.75.75 0 001.5 0V8.25h.75a.75.75 0 000-1.5h-3zM12 9.75a.75.75 0 00-1.5 0v1.5h-1.5a.75.75 0 000 1.5h1.5v1.5a.75.75 0 001.5 0v-1.5h1.5a.75.75 0 000-1.5h-1.5V9.75z" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'principalCI', label: 'Principal Amount', type: 'number', placeholder: '1000' }, { id: 'rateCI', label: 'Annual Interest Rate', type: 'number', placeholder: '5', unit: '%' }, { id: 'timeCI', label: 'Time Period (Years)', type: 'number', placeholder: '10' }, { id: 'compoundsPerYear', label: 'Compounds per Year', type: 'number', placeholder: '12', defaultValue: '12' } ],
+                outputs: [ { id: 'futureValueCI', label: 'Future Value:', default: '0.00', isCurrency: true }, { id: 'totalInterestCI', label: 'Total Interest:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const P = parseFloat(inputs.principalCI) || 0; const rA = parseFloat(inputs.rateCI) || 0; const t = parseFloat(inputs.timeCI) || 0; const n = parseInt(inputs.compoundsPerYear) || 1; if (P < 0 || rA < 0 || t < 0 || n < 1) return { futureValueCI: 'N/A', totalInterestCI: 'N/A' }; const r = rA / 100; const A = P * Math.pow((1 + r/n), n*t); const totalInterest = A - P; return { futureValueCI: A.toFixed(2), totalInterestCI: totalInterest.toFixed(2) }; }
+            },
+            {
+                id: 'percentageCalc',
+                title: 'Percentage Calculator',
+                category: 'Math & Utility',
+                keywords: ['math', 'discount', 'ratio', 'fraction', 'percent'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M15.97 3.97a.75.75 0 011.06 0l3 3a.75.75 0 010 1.06l-3 3a.75.75 0 11-1.06-1.06l1.72-1.72H7.5a.75.75 0 010-1.5h10.19l-1.72-1.72a.75.75 0 010-1.06zm-7.94 9a.75.75 0 010 1.06l-1.72 1.72H16.5a.75.75 0 010 1.5H6.28l1.72 1.72a.75.75 0 11-1.06 1.06l-3-3a.75.75 0 010-1.06l3-3a.75.75 0 011.06 0z" clip-rule="evenodd" /><circle cx="7.5" cy="7.5" r="2.25" /><circle cx="16.5" cy="16.5" r="2.25" /></svg>`,
+                inputs: [ { id: 'percentVal', label: 'What is', type: 'number', placeholder: '10', unit: '%' }, { id: 'ofVal', label: 'of', type: 'number', placeholder: '50' } ],
+                outputs: [ { id: 'resultPercent', label: 'Result:', default: '0.00' } ],
+                calculate: function(inputs) { const p = parseFloat(inputs.percentVal) || 0; const o = parseFloat(inputs.ofVal) || 0; return { resultPercent: ((p / 100) * o).toFixed(2) }; }
+            },
+            {
+                id: 'bmiCalc',
+                title: 'BMI Calculator',
+                category: 'Health & Fitness',
+                keywords: ['health', 'weight', 'fitness', 'body mass index'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M12 2.25c-5.376 0-9.75 4.374-9.75 9.75s4.374 9.75 9.75 9.75 9.75-4.374 9.75-9.75S17.376 2.25 12 2.25zM9.513 10.083c.23-.43.69-.708 1.212-.708s.982.279 1.212.708c.23.43.288.956.16 1.442l-1.372 5.138-1.372-5.138c-.127-.486-.07-.1.01.16-1.442zM12 18.75a.75.75 0 00.75-.75V16.5a.75.75 0 00-1.5 0v1.5c0 .414.336.75.75.75zM12 6a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" /></svg>`,
+                inputs: [ { id: 'weightKg', label: 'Weight (kg)', type: 'number', placeholder: '70' }, { id: 'heightCm', label: 'Height (cm)', type: 'number', placeholder: '175' } ],
+                outputs: [ { id: 'bmiValue', label: 'BMI:', default: '0.0' }, { id: 'bmiCategory', label: 'Category:', default: 'N/A' } ],
+                calculate: function(inputs) { const w = parseFloat(inputs.weightKg) || 0; const h = parseFloat(inputs.heightCm) || 0; if (w <= 0 || h <= 0) return { bmiValue: '0.0', bmiCategory: 'N/A' }; const hM = h / 100; const bmi = w / (hM * hM); let cat = 'N/A'; if (bmi < 18.5) cat = 'Underweight'; else if (bmi < 24.9) cat = 'Normal weight'; else if (bmi < 29.9) cat = 'Overweight'; else cat = 'Obesity'; return { bmiValue: bmi.toFixed(1), bmiCategory: cat }; }
+            },
+            { 
+                id: 'currencyConverterMock', title: 'Currency Converter', category: 'Utility', keywords: ['exchange', 'money', 'foreign', 'travel', ...currencyData.map(c => c.name.toLowerCase()), ...currencyData.map(c => c.code.toLowerCase())],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 3.5c.414 0 .75.336.75.75V8h1.5a.75.75 0 010 1.5H12v.085l2.146 2.147a.75.75 0 11-1.06 1.06L12 11.354l-1.086 1.086a.75.75 0 01-1.06-1.06L11.001 10.5H9.75a.75.75 0 010-1.5h1.501V6.25a.75.75 0 01.75-.75zm-.75 10.25a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5h-1.5z" /></svg>`,
+                inputs: [ { id: 'amountCC', label: 'Amount', type: 'number', placeholder: '100' }, { id: 'fromCurrency', label: 'From', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD' }, { id: 'toCurrency', label: 'To', type: 'select', options: currencyOptionsForSelect, defaultValue: 'EUR' } ],
+                outputs: [ { id: 'convertedAmount', label: 'Converted Amount:', default: '0.00' }, { id: 'rateNote', label: '*Mock rates used. For illustration only.', default: ''} ],
+                calculate: function(inputs) { 
+                    const amount = parseFloat(inputs.amountCC) || 0; const from = inputs.fromCurrency; const to = inputs.toCurrency;
+                    const BASE_RATES = { USD: { EUR: 0.92, GBP: 0.79, INR: 83.10, USD: 1 }, EUR: { USD: 1.08, GBP: 0.85, INR: 90.20, EUR: 1 }, GBP: { USD: 1.27, EUR: 1.17, INR: 105.50, GBP: 1 }, INR: { USD: 0.012, EUR: 0.011, GBP: 0.0095, INR: 1 } };
+                    const MOCK_RATES_TO_USD = { AED: 0.27, AFN: 0.014, ALL: 0.011, AMD: 0.0026, ARS: 0.0011, AUD: 0.66, AZN: 0.59, BAM: 0.55, BDT: 0.0085, BGN: 0.56, BHD: 2.65, BRL: 0.20, BYN: 0.31, CAD: 0.73, CHF: 1.10, CLP: 0.0010, CNY: 0.14, COP: 0.00025, CZK: 0.043, DKK: 0.14, DZD: 0.0074, EGP: 0.021, ETB: 0.017, GEL: 0.37, GHS: 0.067, HKD: 0.13, HUF: 0.0028, IDR: 0.000062, ILS: 0.27, IQD: 0.00076, IRR: 0.000024, ISK: 0.0072, JMD: 0.0064, JOD: 1.41, JPY: 0.0064, KES: 0.0076, KRW: 0.00073, KWD: 3.25, KZT: 0.0022, LBP: 0.000011, LKR: 0.0033, LYD: 0.21, MAD: 0.10, MXN: 0.059, MYR: 0.21, NGN: 0.00068, NOK: 0.093, NPR: 0.0075, NZD: 0.61, OMR: 2.60, PAB: 1.00, PEN: 0.27, PHP: 0.017, PKR: 0.0036, PLN: 0.25, QAR: 0.27, RON: 0.22, RSD: 0.0093, RUB: 0.011, SAR: 0.27, SEK: 0.093, SGD: 0.74, THB: 0.027, TND: 0.32, TRY: 0.031, TWD: 0.031, UAH: 0.025, UGX: 0.00026, UYU: 0.026, VND: 0.000039, ZAR: 0.053 };
+                    let amountInUSD; if (BASE_RATES[from]) { amountInUSD = amount * (BASE_RATES[from].USD || 1); } else if (MOCK_RATES_TO_USD[from]) { amountInUSD = amount * MOCK_RATES_TO_USD[from]; } else if (from === 'USD') { amountInUSD = amount; } else { return { convertedAmount: 'N/A (from rate)', rateNote: '*Mock rates used. For illustration only.' }; }
+                    let convertedValue; if (BASE_RATES[to] && BASE_RATES[to].USD) { convertedValue = amountInUSD / BASE_RATES[to].USD; } else if (MOCK_RATES_TO_USD[to]) { convertedValue = amountInUSD / MOCK_RATES_TO_USD[to]; } else if (to === 'USD') { convertedValue = amountInUSD; } else { return { convertedAmount: 'N/A (to rate)', rateNote: '*Mock rates used. For illustration only.' }; }
+                    if (BASE_RATES[from] && BASE_RATES[from][to]) { convertedValue = amount * BASE_RATES[from][to]; }
+                    if (isNaN(convertedValue)) { return { convertedAmount: 'Error', rateNote: '*Mock rates used. For illustration only.' }; } return { convertedAmount: `${convertedValue.toFixed(2)} ${to}`, rateNote: '*Mock rates used. For illustration only.' };
+                }
+            },
+            {
+                id: 'dateDifference', title: 'Date Difference Calculator', category: 'Date & Time', keywords: ['duration', 'time between', 'days between', 'interval', 'date'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2 inline-block"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-3.75h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg>`,
+                inputs: [ { id: 'startDateDiff', label: 'Start Date', type: 'date' }, { id: 'endDateDiff', label: 'End Date', type: 'date' } ],
+                outputs: [ { id: 'diffYears', label: 'Years:', default: '0' }, { id: 'diffMonths', label: 'Months:', default: '0' }, { id: 'diffDays', label: 'Days:', default: '0' }, { id: 'totalDays', label: 'Total Days:', default: '0'} ],
+                calculate: function(inputs) { const s = inputs.startDateDiff ? new Date(inputs.startDateDiff) : null; const e = inputs.endDateDiff ? new Date(inputs.endDateDiff) : null; if (!s || !e || s > e) return { diffYears: 'N/A', diffMonths: 'N/A', diffDays: 'N/A', totalDays: 'N/A' }; let y = e.getFullYear() - s.getFullYear(); let m = e.getMonth() - s.getMonth(); let d = e.getDate() - s.getDate(); if (d < 0) { m--; d += new Date(e.getFullYear(), e.getMonth(), 0).getDate(); } if (m < 0) { y--; m += 12; } const tDays = Math.floor((e - s) / (1000 * 60 * 60 * 24)); return { diffYears: y.toString(), diffMonths: m.toString(), diffDays: d.toString(), totalDays: tDays.toString() }; }
+            },
+            {
+                id: 'percentageChange', title: 'Percentage Change Calculator', category: 'Math & Utility', keywords: ['increase', 'decrease', 'growth', 'difference', 'percent'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M15.75 2.25a.75.75 0 00-1.5 0v14.69l-3.72-3.72a.75.75 0 00-1.06 1.06L12 16.81l2.53-2.53a.75.75 0 00-1.06-1.06l-1.22 1.22V2.25zM8.25 21.75a.75.75 0 001.5 0V7.06l3.72 3.72a.75.75 0 001.06-1.06L12 7.19 9.47 9.72a.75.75 0 001.06 1.06l1.22-1.22v12.44z" /></svg>`,
+                inputs: [ { id: 'initialValue', label: 'Initial Value', type: 'number', placeholder: '100' }, { id: 'finalValue', label: 'Final Value', type: 'number', placeholder: '120' } ],
+                outputs: [ { id: 'percentChangeResult', label: 'Percentage Change:', default: '0.00%', unit: '' } ],
+                calculate: function(inputs) { const iVal = parseFloat(inputs.initialValue); const fVal = parseFloat(inputs.finalValue); if (isNaN(iVal) || isNaN(fVal) || iVal === 0) return { percentChangeResult: 'N/A' }; const chg = ((fVal - iVal) / Math.abs(iVal)) * 100; return { percentChangeResult: `${chg >= 0 ? '+' : ''}${chg.toFixed(2)}%` }; }
+            },
+            {
+                id: 'simpleBudget', title: 'Simple Budget Calculator', category: 'Financial', keywords: ['income', 'expenses', 'savings', 'finance', 'money', 'budget'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M7.5 7.5a.75.75 0 00-1.5 0v1.5h-1.5a.75.75 0 000 1.5h1.5v1.5a.75.75 0 001.5 0v-1.5h1.5a.75.75 0 000-1.5h-1.5V7.5z" /><path fill-rule="evenodd" d="M2.25 9.75A2.25 2.25 0 014.5 7.5h15A2.25 2.25 0 0121.75 9.75v6A2.25 2.25 0 0119.5 18h-15A2.25 2.25 0 012.25 15.75v-6zm18.25-.28a.75.75 0 00-.22-.53l-2.25-2.25a.75.75 0 00-1.06 0l-2.25 2.25a.75.75 0 00.22.53H20.5zM19.5 11.25H6a.75.75 0 000 1.5h13.5a.75.75 0 000-1.5zM6 14.25a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'income', label: 'Monthly Income', type: 'number', placeholder: '3000' }, { id: 'expenses', label: 'Monthly Expenses', type: 'number', placeholder: '2500' } ],
+                outputs: [ { id: 'balance', label: 'Balance (Savings/Deficit):', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const inc = parseFloat(inputs.income) || 0; const exp = parseFloat(inputs.expenses) || 0; return { balance: (inc - exp).toFixed(2) }; }
+            },
+            {
+                id: 'gpaCalculator', title: 'GPA Calculator (Simple)', category: 'Math & Utility', keywords: ['grade point average', 'school', 'college', 'education', 'marks', 'gpa'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M11.7 2.805a.75.75 0 01.6 0L16.05 4.86a.75.75 0 00.546.066l3.08-.924a.75.75 0 01.956.407l1.5 3.75a.75.75 0 01-.2 1.03l-2.52 1.89a.75.75 0 00-.066.546l.585 3.086a.75.75 0 01-.407.956l-3.75 1.5a.75.75 0 01-1.03-.2L9.113 15.45a.75.75 0 00-.546-.066l-3.08.924a.75.75 0 01-.956-.407l-1.5-3.75a.75.75 0 01.2-1.03l2.52-1.89a.75.75 0 00.066-.546l-.585-3.086a.75.75 0 01.407-.956l3.75-1.5a.75.75 0 011.03.2z" /><path fill-rule="evenodd" d="M12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'grade1', label: 'Course 1 Grade (A=4, B=3..)', type: 'number', placeholder: '4', min: '0', max: '4' }, { id: 'credits1', label: 'Credits 1', type: 'number', placeholder: '3', min:'0.5' }, { id: 'grade2', label: 'Course 2 Grade', type: 'number', placeholder: '3', min: '0', max: '4' }, { id: 'credits2', label: 'Credits 2', type: 'number', placeholder: '3', min:'0.5' }, { id: 'grade3', label: 'Course 3 Grade', type: 'number', placeholder: '' }, { id: 'credits3', label: 'Credits 3', type: 'number', placeholder: '' }, ],
+                outputs: [ { id: 'gpaResult', label: 'GPA:', default: '0.00' } ],
+                calculate: function(inputs) { let tp = 0, tc = 0; for (let i = 1; i <= 3; i++) { const g = parseFloat(inputs[`grade${i}`]); const c = parseFloat(inputs[`credits${i}`]); if (!isNaN(g) && !isNaN(c) && c > 0) { tp += g * c; tc += c; } } return { gpaResult: (tc > 0 ? tp / tc : 0).toFixed(2) }; }
+            },
+            {
+                id: 'mortgagePITI',
+                title: 'Mortgage Calculator (PITI)',
+                category: 'Financial',
+                keywords: ['home loan', 'property tax', 'insurance', 'piti', 'mortgage'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" /><path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'homePrice', label: 'Home Price', type: 'number', placeholder: '300000' }, { id: 'downPayment', label: 'Down Payment', type: 'number', placeholder: '60000' }, { id: 'annualInterestRateMort', label: 'Annual Interest Rate', type: 'number', placeholder: '6.5', unit: '%' }, { id: 'loanTermMort', label: 'Loan Term (Years)', type: 'number', placeholder: '30', defaultValue: '30' }, { id: 'propertyTaxMort', label: 'Annual Property Tax', type: 'number', placeholder: '3000' }, { id: 'homeInsuranceMort', label: 'Annual Home Insurance', type: 'number', placeholder: '1200' } ],
+                outputs: [ { id: 'principalAndInterest', label: 'Principal & Interest (P&I):', default: '0.00', isCurrency: true }, { id: 'monthlyTax', label: 'Monthly Property Tax:', default: '0.00', isCurrency: true }, { id: 'monthlyInsurance', label: 'Monthly Home Insurance:', default: '0.00', isCurrency: true }, { id: 'totalMonthlyPITI', label: 'Total Monthly (PITI):', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const price = parseFloat(inputs.homePrice) || 0; const down = parseFloat(inputs.downPayment) || 0; const P = price - down; if (P <= 0) return { principalAndInterest: '0.00', monthlyTax: '0.00', monthlyInsurance: '0.00', totalMonthlyPITI: '0.00' }; const annualRate = parseFloat(inputs.annualInterestRateMort) || 0; const termYears = parseInt(inputs.loanTermMort) || 1; const annualTax = parseFloat(inputs.propertyTaxMort) || 0; const annualInsurance = parseFloat(inputs.homeInsuranceMort) || 0; const r = (annualRate / 100) / 12; const n = termYears * 12; let pi = 0; if (annualRate === 0) { pi = P / n; } else { pi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1); } const monthlyTaxVal = annualTax / 12; const monthlyInsuranceVal = annualInsurance / 12; const piti = pi + monthlyTaxVal + monthlyInsuranceVal; return { principalAndInterest: pi.toFixed(2), monthlyTax: monthlyTaxVal.toFixed(2), monthlyInsurance: monthlyInsuranceVal.toFixed(2), totalMonthlyPITI: piti.toFixed(2) }; }
+            },
+            {
+                id: 'retirementSavings',
+                title: 'Retirement Savings Calculator',
+                category: 'Financial',
+                keywords: ['pension', '401k', 'nest egg', 'retirement', 'savings'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM8.203 6.75a.75.75 0 011.06-.052l4.5 3.75a.75.75 0 010 1.104l-4.5 3.75a.75.75 0 01-1.007-1.104L11.322 12 8.256 9.158a.75.75 0 01-.053-1.06v-.001zM12.75 6a.75.75 0 00-1.5 0v12a.75.75 0 001.5 0V6z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'currentSavings', label: 'Current Savings', type: 'number', placeholder: '50000' }, { id: 'monthlyContribution', label: 'Monthly Contribution', type: 'number', placeholder: '500' }, { id: 'annualGrowthRate', label: 'Avg. Annual Growth Rate', type: 'number', placeholder: '7', unit: '%' }, { id: 'yearsToRetirement', label: 'Years to Retirement', type: 'number', placeholder: '30' } ],
+                outputs: [ { id: 'futureValueRetire', label: 'Estimated Retirement Savings:', default: '0.00', isCurrency: true }, { id: 'totalContributions', label: 'Total Contributions:', default: '0.00', isCurrency: true }, { id: 'totalGrowth', label: 'Total Growth:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const P = parseFloat(inputs.currentSavings) || 0; const M = parseFloat(inputs.monthlyContribution) || 0; const rAnnual = (parseFloat(inputs.annualGrowthRate) || 0) / 100; const t = parseInt(inputs.yearsToRetirement) || 0; if (t <= 0) return { futureValueRetire: P.toFixed(2), totalContributions: P.toFixed(2), totalGrowth: '0.00' }; const rMonthly = rAnnual / 12; const n = t * 12; const fvP = P * Math.pow(1 + rMonthly, n); const fvM = M * ( (Math.pow(1 + rMonthly, n) - 1) / rMonthly ); const totalFV = fvP + fvM; const totalContributed = P + (M * n); const totalGrowthVal = totalFV - totalContributed; return { futureValueRetire: totalFV.toFixed(2), totalContributions: totalContributed.toFixed(2), totalGrowth: totalGrowthVal.toFixed(2) }; }
+            },
+            {
+                id: 'investmentReturn',
+                title: 'Investment Return (ROI) Calculator',
+                category: 'Financial',
+                keywords: ['roi', 'profit', 'loss', 'investment', 'return on investment'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6.19L8.03 9.07a.75.75 0 00-1.06 1.06L10.69 14.25H6a.75.75 0 000 1.5h4.69L8.03 18.88a.75.75 0 101.06 1.06L12.75 16.28V18a.75.75 0 001.5 0v-1.72l3.64 3.64a.75.75 0 101.06-1.06L14.23 15.75H18a.75.75 0 000-1.5h-3.77l3.64-3.64a.75.75 0 00-1.06-1.06L14.25 12.72V6.53l2.69-2.69a.75.75 0 00-1.06-1.06L12.75 6z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'initialInvestment', label: 'Initial Investment', type: 'number', placeholder: '1000' }, { id: 'finalValueInvestment', label: 'Final Value of Investment', type: 'number', placeholder: '1200' } ],
+                outputs: [ { id: 'netProfit', label: 'Net Profit/Loss:', default: '0.00', isCurrency: true }, { id: 'roiPercentage', label: 'Return on Investment (ROI):', default: '0.00%' } ],
+                calculate: function(inputs) { const initial = parseFloat(inputs.initialInvestment) || 0; const final = parseFloat(inputs.finalValueInvestment) || 0; if (initial === 0 && final === 0) return {netProfit: '0.00', roiPercentage: '0.00%'}; if (initial === 0) return {netProfit: final.toFixed(2), roiPercentage: 'Infinite%'}; const profit = final - initial; const roi = (profit / Math.abs(initial)) * 100; return { netProfit: profit.toFixed(2), roiPercentage: `${roi.toFixed(2)}%` }; }
+            },
+            {
+                id: 'depreciationStraightLine',
+                title: 'Depreciation Calculator (Straight-Line)',
+                category: 'Financial',
+                keywords: ['asset value', 'accounting', 'depreciation'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M16.5 2.25a.75.75 0 00-1.5 0v10.94l-2.72-2.72a.75.75 0 00-1.06 1.06l4 4a.75.75 0 001.06 0l4-4a.75.75 0 00-1.06-1.06l-2.72 2.72V2.25z" /><path fill-rule="evenodd" d="M3 6a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6zm0 4.5A.75.75 0 013.75 9h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75zm0 4.5a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 15zm0 4.5a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'assetCost', label: 'Asset Cost', type: 'number', placeholder: '10000' }, { id: 'salvageValue', label: 'Salvage Value', type: 'number', placeholder: '1000' }, { id: 'usefulLife', label: 'Useful Life (Years)', type: 'number', placeholder: '5' } ],
+                outputs: [ { id: 'annualDepreciation', label: 'Annual Depreciation:', default: '0.00', isCurrency: true }, { id: 'totalDepreciation', label: 'Total Depreciable Amount:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const cost = parseFloat(inputs.assetCost) || 0; const salvage = parseFloat(inputs.salvageValue) || 0; const life = parseInt(inputs.usefulLife) || 0; if (cost < salvage || life <= 0) return { annualDepreciation: 'N/A', totalDepreciation: 'N/A' }; const depreciableAmount = cost - salvage; const annual = depreciableAmount / life; return { annualDepreciation: annual.toFixed(2), totalDepreciation: depreciableAmount.toFixed(2) }; }
+            },
+             {
+                id: 'breakEvenPoint',
+                title: 'Break-Even Point Calculator',
+                category: 'Financial',
+                keywords: ['business', 'finance', 'profitability', 'fixed costs', 'variable costs'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M3 6a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6zm0 13.5a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75zM12 8.25a.75.75 0 01.75.75v6a.75.75 0 01-1.5 0v-6a.75.75 0 01.75-.75zM9.75 9a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'currencySelectBreakEven', label: 'Currency for Costs/Price', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'}, { id: 'fixedCosts', label: 'Total Fixed Costs', type: 'number', placeholder: '10000' }, { id: 'variableCostPerUnit', label: 'Variable Cost Per Unit', type: 'number', placeholder: '5' }, { id: 'salePricePerUnit', label: 'Sale Price Per Unit', type: 'number', placeholder: '15' } ],
+                outputs: [ { id: 'breakEvenUnits', label: 'Break-Even Units:', default: '0' }, { id: 'contributionMargin', label: 'Contribution Margin per Unit:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) { const fixed = parseFloat(inputs.fixedCosts) || 0; const variable = parseFloat(inputs.variableCostPerUnit) || 0; const price = parseFloat(inputs.salePricePerUnit) || 0; const contributionMargin = price - variable; if (contributionMargin <= 0) return { breakEvenUnits: 'N/A (Price <= Variable Cost)', contributionMargin: contributionMargin.toFixed(2) }; const units = fixed / contributionMargin; return { breakEvenUnits: Math.ceil(units).toString(), contributionMargin: contributionMargin.toFixed(2) }; }
+            },
+            {
+                id: 'dayCounter',
+                title: 'Day Counter',
+                category: 'Date & Time',
+                keywords: ['days between dates', 'date duration', 'countdown'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6h-3a.75.75 0 000 1.5h3.75A.75.75 0 0013.5 12V6a.75.75 0 00-.75-.75z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'startDateDayCount', label: 'Start Date', type: 'date', defaultValue: getTodayDateString }, { id: 'endDateDayCount', label: 'End Date', type: 'date' } ],
+                outputs: [ { id: 'totalDaysCount', label: 'Total Days Between Dates:', default: '0' } ],
+                calculate: function(inputs) { const start = inputs.startDateDayCount ? new Date(inputs.startDateDayCount) : null; const end = inputs.endDateDayCount ? new Date(inputs.endDateDayCount) : null; if (!start || !end) return { totalDaysCount: 'N/A' }; const utcStart = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate()); const utcEnd = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate()); const diffMillis = utcEnd - utcStart; const diffDays = Math.round(diffMillis / (1000 * 60 * 60 * 24)); return { totalDaysCount: diffDays.toString() }; }
+            },
+            {
+                id: 'timeZoneConverter',
+                title: 'Time Zone Converter (Mock)',
+                category: 'Date & Time',
+                keywords: ['world clock', 'time difference', 'gmt', 'utc'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v5.25H8.25a.75.75 0 000 1.5h3.75V18a.75.75 0 001.5 0V6z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'timeInput', label: 'Time (HH:MM)', type: 'time', defaultValue: new Date().toTimeString().substring(0,5) }, { id: 'dateInputTZ', label: 'Date', type: 'date', defaultValue: getTodayDateString }, { id: 'fromTimeZone', label: 'From Time Zone', type: 'select', options: timeZoneOptionsForSelect, defaultValue: 0 }, { id: 'toTimeZone', label: 'To Time Zone', type: 'select', options: timeZoneOptionsForSelect, defaultValue: 5.5 } ],
+                outputs: [ { id: 'convertedTime', label: 'Converted Time:', default: 'HH:MM' }, { id: 'convertedDate', label: 'Converted Date:', default: 'YYYY-MM-DD' }, { id: 'tzNote', label: '*Mock, does not handle DST dynamically.', default: ''} ],
+                calculate: function(inputs) { const timeStr = inputs.timeInput; const dateStr = inputs.dateInputTZ; const fromOffset = parseFloat(inputs.fromTimeZone); const toOffset = parseFloat(inputs.toTimeZone); if (!timeStr || !dateStr || isNaN(fromOffset) || isNaN(toOffset)) { return { convertedTime: 'N/A', convertedDate: 'N/A', tzNote: '*Mock, does not handle DST dynamically.' }; } const [hours, minutes] = timeStr.split(':').map(Number); const [year, month, day] = dateStr.split('-').map(Number); const baseDate = new Date(Date.UTC(year, month - 1, day, hours, minutes, 0)); baseDate.setUTCHours(baseDate.getUTCHours() - fromOffset); baseDate.setUTCHours(baseDate.getUTCHours() + toOffset); const finalHours = String(baseDate.getUTCHours()).padStart(2, '0'); const finalMinutes = String(baseDate.getUTCMinutes()).padStart(2, '0'); const finalYear = baseDate.getUTCFullYear(); const finalMonth = String(baseDate.getUTCMonth() + 1).padStart(2, '0'); const finalDay = String(baseDate.getUTCDate()).padStart(2, '0'); return { convertedTime: `${finalHours}:${finalMinutes}`, convertedDate: `${finalYear}-${finalMonth}-${finalDay}`, tzNote: '*Mock, does not handle DST dynamically.' }; }
+            },
+            {
+                id: 'pregnancyDueDate',
+                title: 'Pregnancy Due Date Calculator',
+                category: 'Health & Fitness',
+                keywords: ['baby', 'edd', 'due date', 'pregnancy', 'obstetrics'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM9.25 10.25a.75.75 0 000 1.5h2.5a.75.75 0 000-1.5h-2.5zM10.5 12.25a.75.75 0 01.75.75v2.5a.75.75 0 01-1.5 0v-2.5a.75.75 0 01.75-.75zM12.75 10.25a.75.75 0 000 1.5h2.5a.75.75 0 000-1.5h-2.5z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'lmpDate', label: 'First Day of Last Menstrual Period (LMP)', type: 'date' } ],
+                outputs: [ 
+                    { id: 'estimatedDueDate', label: 'Estimated Due Date (EDD):', default: 'N/A' }, 
+                    { id: 'gestationalAge', label: 'Current Gestational Age:', default: 'N/A' },
+                    { id: 'currentTrimester', label: 'Current Trimester:', default: 'N/A' },
+                    { id: 'daysRemaining', label: 'Days Remaining to EDD:', default: 'N/A' },
+                    { id: 'estimatedConceptionDate', label: 'Estimated Conception Date:', default: 'N/A' }
+                ],
+                calculate: function(inputs) { 
+                    const lmpStr = inputs.lmpDate; 
+                    if (!lmpStr) return { estimatedDueDate: 'N/A', gestationalAge: 'N/A', currentTrimester: 'N/A', daysRemaining: 'N/A', estimatedConceptionDate: 'N/A' }; 
+                    const lmp = new Date(lmpStr); 
+                    if (isNaN(lmp.getTime())) return { estimatedDueDate: 'Invalid LMP Date', gestationalAge: 'N/A', currentTrimester: 'N/A', daysRemaining: 'N/A', estimatedConceptionDate: 'N/A' };
+                    
+                    const edd = new Date(lmp.getTime());
+                    edd.setDate(lmp.getDate() + 280); 
+
+                    const conceptionDate = new Date(lmp.getTime());
+                    conceptionDate.setDate(lmp.getDate() + 14); 
+
+                    const today = new Date(); 
+                    today.setHours(0,0,0,0); 
+                    lmp.setHours(0,0,0,0);
+
+                    let gestationalAgeStr = 'N/A';
+                    let currentTrimesterStr = 'N/A';
+                    let daysRemainingStr = 'N/A';
+                    let weeks = 0;
+
+                    if (today >= lmp) {
+                        const diffMillis = today.getTime() - lmp.getTime();
+                        const diffDays = Math.floor(diffMillis / (1000 * 60 * 60 * 24));
+                        weeks = Math.floor(diffDays / 7);
+                        const days = diffDays % 7;
+                        gestationalAgeStr = `${weeks} weeks, ${days} days`;
+
+                        if (weeks <= 13) currentTrimesterStr = "1st Trimester";
+                        else if (weeks <= 27) currentTrimesterStr = "2nd Trimester";
+                        else if (weeks <= 42) currentTrimesterStr = "3rd Trimester"; 
+                        else currentTrimesterStr = "Beyond typical term";
+                    }
+
+                    if (edd >= today) {
+                        const diffMillisToEdd = edd.getTime() - today.getTime();
+                        daysRemainingStr = Math.ceil(diffMillisToEdd / (1000 * 60 * 60 * 24)).toString() + " days";
+                    } else {
+                        daysRemainingStr = "Past EDD";
+                    }
+                    
+                    return { 
+                        estimatedDueDate: edd.toLocaleDateString('en-CA'), 
+                        gestationalAge: gestationalAgeStr,
+                        currentTrimester: currentTrimesterStr,
+                        daysRemaining: daysRemainingStr,
+                        estimatedConceptionDate: conceptionDate.toLocaleDateString('en-CA')
+                    }; 
+                }
+            },
+             {
+                id: 'bmrCalculator',
+                title: 'Basal Metabolic Rate (BMR) Calculator',
+                category: 'Health & Fitness',
+                keywords: ['metabolism', 'calories', 'health', 'diet', 'bmr'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M12 2.25A2.25 2.25 0 009.75 4.5v15A2.25 2.25 0 0012 21.75a2.25 2.25 0 002.25-2.25V4.5A2.25 2.25 0 0012 2.25z" /><path fill-rule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0v-1.5h-1.5a.75.75 0 010-1.5h1.5V4.5a.75.75 0 01.75-.75zM12 15.75a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5a.75.75 0 01.75-.75z" clip-rule="evenodd" /></svg>`,
+                inputs: [ { id: 'ageBMR', label: 'Age (years)', type: 'number', placeholder: '30' }, { id: 'genderBMR', label: 'Gender', type: 'select', options: [{value: 'male', text: 'Male'}, {value: 'female', text: 'Female'}] }, { id: 'weightBMR', label: 'Weight (kg)', type: 'number', placeholder: '70' }, { id: 'heightBMR', label: 'Height (cm)', type: 'number', placeholder: '175' } ],
+                outputs: [ { id: 'bmrResult', label: 'BMR (Mifflin-St Jeor):', default: '0 kcal/day' } ],
+                calculate: function(inputs) { const age = parseInt(inputs.ageBMR) || 0; const gender = inputs.genderBMR; const weight = parseFloat(inputs.weightBMR) || 0; const height = parseFloat(inputs.heightBMR) || 0; if (age <=0 || weight <= 0 || height <= 0) return { bmrResult: 'N/A' }; let bmr = 0; if (gender === 'male') { bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5; } else { bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161; } return { bmrResult: `${Math.round(bmr)} kcal/day` }; }
+            },
+            {
+                id: 'loanEligibility',
+                title: 'Loan Eligibility Calculator (Simplified)',
+                category: 'Financial',
+                keywords: ['eligible', 'loan capacity', 'borrowing power', 'debt-to-income', 'dti'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path fill-rule="evenodd" d="M10.5 3.75a.75.75 0 01.75.75v1.5h3V4.5a.75.75 0 011.5 0v1.5h.75a3 3 0 013 3v9.75a3 3 0 01-3 3H5.25a3 3 0 01-3-3V9A3 3 0 014.5 6h.75V4.5a.75.75 0 01.75-.75h4.5zM6 9a1.5 1.5 0 00-1.5 1.5v9A1.5 1.5 0 006 21h12a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0018 9H6zm4.5 3.75a.75.75 0 00-1.5 0v2.25a.75.75 0 001.5 0v-2.25z" clip-rule="evenodd" /><path d="M12.75 12.75a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75h-.008a.75.75 0 01-.75-.75v-.008zM15.75 12a.75.75 0 00-1.5 0v2.25a.75.75 0 001.5 0V12z" /></svg>`,
+                inputs: [
+                    { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'},
+                    { id: 'monthlyIncome', label: 'Gross Monthly Income', type: 'number', placeholder: '5000' },
+                    { id: 'monthlyDebt', label: 'Total Monthly Debt Payments', type: 'number', placeholder: '1000' },
+                    { id: 'loanInterestRateElig', label: 'Assumed Annual Loan Interest Rate', type: 'number', placeholder: '7', unit: '%' },
+                    { id: 'loanTermElig', label: 'Assumed Loan Term (Years)', type: 'number', placeholder: '5' },
+                    { id: 'maxDTIPercent', label: 'Max Debt-to-Income Ratio (DTI)', type: 'number', placeholder: '40', unit: '%', defaultValue: '40' }
+                ],
+                outputs: [
+                    { id: 'affordableMonthlyPayment', label: 'Affordable Monthly Loan Payment (Est.):', default: '0.00', isCurrency: true },
+                    { id: 'estimatedLoanAmount', label: 'Estimated Loan Amount You Might Qualify For:', default: '0.00', isCurrency: true },
+                    { id: 'eligibilityNote', label: '*Illustrative only. Actual eligibility depends on lender criteria.', default: ''}
+                ],
+                calculate: function(inputs) {
+                    const income = parseFloat(inputs.monthlyIncome) || 0; const debt = parseFloat(inputs.monthlyDebt) || 0; const rate = (parseFloat(inputs.loanInterestRateElig) || 0) / 100; const term = parseInt(inputs.loanTermElig) || 0; const dti = (parseFloat(inputs.maxDTIPercent) || 0) / 100;
+                    if (income <= 0 || rate <= 0 || term <= 0 || dti <= 0) return { affordableMonthlyPayment: 'N/A', estimatedLoanAmount: 'N/A', eligibilityNote: '*Illustrative only. Actual eligibility depends on lender criteria.' };
+                    const maxMonthlyDebtTotal = income * dti; const affordablePayment = maxMonthlyDebtTotal - debt;
+                    if (affordablePayment <= 0) return { affordableMonthlyPayment: '0.00', estimatedLoanAmount: '0.00 (Existing debt may be too high)', eligibilityNote: '*Illustrative only. Actual eligibility depends on lender criteria.' };
+                    const rMonthly = rate / 12; const n = term * 12; const estimatedLoan = affordablePayment * ( (1 - Math.pow(1 + rMonthly, -n)) / rMonthly );
+                    return { affordableMonthlyPayment: affordablePayment.toFixed(2), estimatedLoanAmount: estimatedLoan.toFixed(2), eligibilityNote: '*Illustrative only. Actual eligibility depends on lender criteria.' };
+                }
+            },
+            {
+                id: 'interestOnlyLoan',
+                title: 'Interest-Only Loan Calculator',
+                category: 'Financial',
+                keywords: ['interest only', 'loan payment', 'finance'],
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 mr-2 inline-block"><path d="M12 7.5a.75.75 0 01.75.75v3.75h3.75a.75.75 0 010 1.5H13.5v3.75a.75.75 0 01-1.5 0V13.5H8.25a.75.75 0 010-1.5h3.75V8.25A.75.75 0 0112 7.5z" /><path fill-rule="evenodd" d="M1.5 12a10.5 10.5 0 1121 0 10.5 10.5 0 01-21 0zM3 12a9 9 0 1118 0 9 9 0 01-18 0z" clip-rule="evenodd" /></svg>`,
+                inputs: [
+                    { id: 'currencySelect', label: 'Currency', type: 'select', options: currencyOptionsForSelect, defaultValue: 'USD'},
+                    { id: 'loanAmountIO', label: 'Loan Amount', type: 'number', placeholder: '100000' },
+                    { id: 'annualInterestRateIO', label: 'Annual Interest Rate', type: 'number', placeholder: '5', unit: '%' }
+                ],
+                outputs: [ { id: 'monthlyInterestOnlyPayment', label: 'Monthly Interest-Only Payment:', default: '0.00', isCurrency: true } ],
+                calculate: function(inputs) {
+                    const P = parseFloat(inputs.loanAmountIO) || 0; const annualRate = (parseFloat(inputs.annualInterestRateIO) || 0) / 100;
+                    if (P <= 0 || annualRate <= 0) return { monthlyInterestOnlyPayment: '0.00' };
+                    const monthlyPayment = (P * annualRate) / 12;
+                    return { monthlyInterestOnlyPayment: monthlyPayment.toFixed(2) };
+                }
+            }
+
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const calculatorGrid = document.getElementById('calculator-grid');
+            const searchInput = document.getElementById('searchCalculator');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+
+            if (!calculatorGrid || !searchInput || !noResultsMessage) {  console.error("Essential elements not found!"); return; }
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            calculatorDefinitions.forEach(calc => {
+                const card = document.createElement('div');
+                card.className = 'calculator-card bg-white p-5 md:p-6 rounded-xl shadow-md border border-slate-200 flex flex-col';
+                card.id = `${calc.id}-card`;
+                card.dataset.title = calc.title.toLowerCase();
+                card.dataset.keywords = calc.keywords ? calc.keywords.join(' ').toLowerCase() : '';
+
+                let titleColor = 'text-indigo-600'; 
+                if (calc.category === 'Financial') titleColor = 'text-emerald-600';
+                else if (calc.category === 'Date & Time') titleColor = 'text-purple-600';
+                else if (calc.category === 'Health & Fitness') titleColor = 'text-red-600';
+                
+                if (calc.id.includes('Currency')) titleColor = 'text-lime-600';
+                if (calc.id.includes('Paint') || calc.id.includes('Flooring') || calc.id.includes('Concrete') || calc.id.includes('Ohm') || calc.id.includes('pH') || calc.id.includes('Molarity')) titleColor = 'text-yellow-600';
+
+
+                const inputsHTML = calc.inputs.map(input => {
+                    let inputElementHTML = ''; let inputValue = input.defaultValue;
+                    if (typeof input.defaultValue === 'function') { inputValue = input.defaultValue(); }
+                    if (input.type === 'select') {
+                        inputElementHTML = `<select id="${calc.id}_input_${input.id}" data-calculator-id="${calc.id}" data-input-id="${input.id}" class="calc-input mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-500 sm:text-sm p-2.5">${input.options.map(opt => `<option value="${opt.value}" ${inputValue === opt.value ? 'selected' : ''}>${opt.text}</option>`).join('')}</select>`;
+                    } else {
+                        inputElementHTML = `<div class="relative"><input type="${input.type}" id="${calc.id}_input_${input.id}" data-calculator-id="${calc.id}" data-input-id="${input.id}" class="calc-input mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-500 sm:text-sm p-2.5 ${input.unit === '%' ? 'pr-10' : ''}" placeholder="${input.placeholder || ''}" value="${inputValue || ''}" ${input.type === 'date' ? 'required' : ''} ${input.min ? `min="${input.min}"` : ''} ${input.max ? `max="${input.max}"` : ''}>${input.unit === '%' ? `<span class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-slate-500">%</span>` : ''}</div>`;
+                    } 
+                    let labelHTML = `<label for="${calc.id}_input_${input.id}" class="block text-sm font-medium text-slate-700 mb-1">${input.label} ${input.unit && input.unit !== '%' && input.type !== 'select' ? `(${input.unit})` : ''}</label>`;
+                    return `<div>${labelHTML}${inputElementHTML}</div>`;
+                }).join('');
+                
+                let additionalNotes = '';
+                if (calc.id === 'loanEMI') {
+                    additionalNotes = `<p class="text-xs text-slate-500 mt-3 px-1">Note: Loan terms (interest rate, duration) vary by purpose. For detailed home loan calculations (including taxes & insurance), use the "Mortgage Calculator (PITI)". This calculator provides the Equated Monthly Installment for the given principal, rate, and term.</p>`;
+                }
+
+                const resetButtonHTML = `<div class="mt-4 mb-2 flex justify-center">
+                                            <button type="button" id="reset_${calc.id}" data-calculator-id="${calc.id}" class="reset-button bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-lg text-sm transition-colors">Reset</button>
+                                         </div>`;
+
+                card.innerHTML = `<h2 class="text-xl md:text-2xl font-semibold ${titleColor} mb-5 flex items-center">${calc.icon || ''}${calc.title}</h2><div class="space-y-4">${inputsHTML}</div>${resetButtonHTML}${additionalNotes}${calc.outputs.length > 0 ? `<div class="mt-4 p-4 bg-slate-100 rounded-lg border border-slate-200 space-y-2"><h3 class="text-md font-semibold text-slate-700 mb-2">Results:</h3>${calc.outputs.map(output => `<p class="text-sm text-slate-600 flex justify-between items-center"><span>${output.label}</span><span id="${calc.id}_output_${output.id}" class="font-bold ${titleColor} text-right">${output.unit || ''}${output.default}</span></p>`).join('')}</div>` : ''}`;
+                calculatorGrid.appendChild(card);
+                triggerCalculation(calc.id, card);
+            });
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim(); const cards = calculatorGrid.querySelectorAll('.calculator-card'); let visibleCount = 0;
+                cards.forEach(card => { const title = card.dataset.title || ''; const keywords = card.dataset.keywords || ''; if (title.includes(searchTerm) || keywords.includes(searchTerm)) { card.classList.remove('hidden-card'); visibleCount++; } else { card.classList.add('hidden-card'); } });
+                if (visibleCount === 0 && searchTerm !== '') { noResultsMessage.classList.remove('hidden-card'); } else { noResultsMessage.classList.add('hidden-card'); }
+            });
+
+            document.querySelectorAll('.calc-input').forEach(inputElement => {
+                const eventType = inputElement.tagName.toLowerCase() === 'select' ? 'change' : 'input';
+                inputElement.addEventListener(eventType, (event) => { const calculatorId = event.target.dataset.calculatorId; const cardElement = document.getElementById(`${calculatorId}-card`); triggerCalculation(calculatorId, cardElement, event.target.id); });
+                if (inputElement.type === 'date') { inputElement.addEventListener('change', (event) => { const calculatorId = event.target.dataset.calculatorId; const cardElement = document.getElementById(`${calculatorId}-card`); triggerCalculation(calculatorId, cardElement, event.target.id); }); }
+            });
+
+            document.querySelectorAll('.reset-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const calculatorId = this.dataset.calculatorId;
+                    const calculator = calculatorDefinitions.find(c => c.id === calculatorId);
+                    const cardElement = document.getElementById(`${calculatorId}-card`);
+
+                    if (calculator && cardElement) {
+                        calculator.inputs.forEach(inputDef => {
+                            const inputEl = cardElement.querySelector(`#${calculator.id}_input_${inputDef.id}`);
+                            if (inputEl) {
+                                if (typeof inputDef.defaultValue === 'function') {
+                                    inputEl.value = inputDef.defaultValue();
+                                } else if (inputDef.defaultValue !== undefined) {
+                                    inputEl.value = inputDef.defaultValue;
+                                } else {
+                                    inputEl.value = '';
+                                }
+                            }
+                        });
+                        triggerCalculation(calculatorId, cardElement); 
+                    }
+                });
+            });
+        });
+
+        function triggerCalculation(calculatorId, cardElement, triggerInputId = null) {
+            const calculator = calculatorDefinitions.find(c => c.id === calculatorId); if (!calculator || !cardElement) return;
+            const currentInputs = {}; calculator.inputs.forEach(inputDef => { const inputEl = cardElement.querySelector(`#${calculator.id}_input_${inputDef.id}`); if (inputEl) { currentInputs[inputDef.id] = inputEl.value; } });
+            const results = calculator.calculate(currentInputs, triggerInputId);
+            
+            let selectedCurrencyCode = '';
+            const currencyDropdown = cardElement.querySelector(`#${calculator.id}_input_currencySelect`) || cardElement.querySelector(`#${calculator.id}_input_currencySelectBreakEven`);
+            if (currencyDropdown) {
+                selectedCurrencyCode = currencyDropdown.value;
+            }
+
+            if (calculator.customLogic && calculator.id === 'tempConverter') { 
+                if (results.fahrenheit !== undefined) { const fInput = cardElement.querySelector(`#${calculator.id}_input_fahrenheit`); if (fInput) fInput.value = results.fahrenheit; }
+                if (results.celsius !== undefined) { const cInput = cardElement.querySelector(`#${calculator.id}_input_celsius`); if (cInput) cInput.value = results.celsius; }
+                if (results.kelvin !== undefined) { const kInput = cardElement.querySelector(`#${calculator.id}_input_kelvin`); if (kInput) kInput.value = results.kelvin; }
+            }
+            else {
+                calculator.outputs.forEach(outputDef => {
+                    const outputEl = cardElement.querySelector(`#${calculator.id}_output_${outputDef.id}`);
+                    if (outputEl && results[outputDef.id] !== undefined) {
+                        outputEl.classList.remove('opacity-0', 'translate-y-1'); outputEl.classList.add('opacity-50');
+                        setTimeout(() => {
+                            outputEl.classList.remove('opacity-50'); outputEl.classList.add('opacity-100', 'translate-y-0');
+                            let displayText = results[outputDef.id];
+                            let displaySymbol = '';
+
+                            if (outputDef.isCurrency && selectedCurrencyCode) { 
+                                displaySymbol = currencySymbolMap[selectedCurrencyCode] || selectedCurrencyCode; 
+                            }
+                            
+                            if (outputDef.isCurrency && displaySymbol && results[outputDef.id] !== 'N/A' && !String(results[outputDef.id]).toLowerCase().includes('n/a') && !String(results[outputDef.id]).toLowerCase().includes('error')) { 
+                                displayText = `${displaySymbol} ${results[outputDef.id]}`; 
+                            } else if (outputDef.unit && results[outputDef.id] !== 'N/A' && !String(results[outputDef.id]).toLowerCase().includes('n/a') && !String(results[outputDef.id]).toLowerCase().includes('error')) { 
+                                displayText = `${results[outputDef.id]} ${outputDef.unit}`; 
+                            }
+                            
+                            if (outputDef.id === 'rateNote' && calculator.id === 'currencyConverterMock') { outputEl.textContent = results[outputDef.id]; } 
+                            else if (outputDef.id === 'convertedAmount' && calculator.id === 'currencyConverterMock') { 
+                                outputEl.textContent = results[outputDef.id];
+                            }
+                            else { outputEl.textContent = displayText; }
+                        }, 50);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
